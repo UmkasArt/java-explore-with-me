@@ -1,13 +1,11 @@
 package ru.practicum.explore.with.me.events.model;
 
 import lombok.*;
-import org.hibernate.Hibernate;
 import ru.practicum.explore.with.me.categories.model.Categories;
 import ru.practicum.explore.with.me.users.model.User;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Getter
 @Setter
