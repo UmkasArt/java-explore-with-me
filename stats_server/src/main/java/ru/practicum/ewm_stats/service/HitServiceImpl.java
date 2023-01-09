@@ -6,10 +6,12 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.ewm_stats.dto.EndpointHit;
 import ru.practicum.ewm_stats.dto.HitMapper;
 import ru.practicum.ewm_stats.dto.ViewStats;
+import ru.practicum.ewm_stats.model.Hit;
 import ru.practicum.ewm_stats.repository.HitRepository;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -43,11 +45,13 @@ public class HitServiceImpl implements HitService {
                     .peek(viewStats -> viewStats.setHits(Long.valueOf(countViewsByUri(viewStats.getUri()))))
                     .collect(Collectors.toList());
         } else {
-            hits = hitRepository.findAllByTimestampBetween(startDate, endDate)
-                    .stream()
-                    .map(HitMapper::toViewStats)
-                    .peek(viewStats -> viewStats.setHits(Long.valueOf(countViewsByUri(viewStats.getUri()))))
-                    .collect(Collectors.toList());
+            List<ViewStats> list = new ArrayList<>();
+            for (Hit hit : hitRepository.findAllByTimestampBetween(startDate, endDate)) {
+                ViewStats viewStats = HitMapper.toViewStats(hit);
+                viewStats.setHits(Long.valueOf(countViewsByUri(viewStats.getUri())));
+                list.add(viewStats);
+            }
+            hits = list;
         }
         return uris == null ? hits : hits.stream()
                 .map(viewStats -> filterByUris(viewStats, uris))
