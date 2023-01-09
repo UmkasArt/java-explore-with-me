@@ -63,6 +63,7 @@ public class EventMapper {
                 event.getViews()
         );
     }
+
     public static Event toEvent(ShortEventDto shortEventDto) {
         return new Event(
                 shortEventDto.getId(),

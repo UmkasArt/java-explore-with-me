@@ -16,6 +16,7 @@ public class CompilationsMapper {
                 compilationDto.getEvents().stream().map(EventMapper::toEvent).collect(Collectors.toList())
         );
     }
+
     public static CompilationDto toCompilationDto(Compilation compilation) {
         return new CompilationDto(
                 compilation.getId(),
@@ -24,6 +25,7 @@ public class CompilationsMapper {
                 compilation.getEvents().stream().map(EventMapper::toShortEventDto).collect(Collectors.toList())
         );
     }
+
     public static Compilation toCompilation(ShortCompilationDto compilationDto) {
         return new Compilation(
                 compilationDto.getTitle(),

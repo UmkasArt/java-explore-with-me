@@ -9,6 +9,7 @@ public class LocationMapper {
                 location.getLon()
         );
     }
+
     public static Location toLocation(LocationDto locationDto) {
         return new Location(
                 locationDto.getLat(),
