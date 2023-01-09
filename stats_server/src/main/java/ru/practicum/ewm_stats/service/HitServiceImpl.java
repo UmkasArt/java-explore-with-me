@@ -40,10 +40,12 @@ public class HitServiceImpl implements HitService {
         LocalDateTime endDate = LocalDateTime.parse(end, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         List<ViewStats> hits;
         if (Boolean.TRUE.equals(uniq)) {
-            hits = hitRepository.findDistinct(startDate, endDate)
-                    .stream()
-                    .peek(viewStats -> viewStats.setHits(Long.valueOf(countViewsByUri(viewStats.getUri()))))
-                    .collect(Collectors.toList());
+            List<ViewStats> list = new ArrayList<>();
+            for (ViewStats viewStats : hitRepository.findDistinct(startDate, endDate)) {
+                viewStats.setHits(Long.valueOf(countViewsByUri(viewStats.getUri())));
+                list.add(viewStats);
+            }
+            hits = list;
         } else {
             List<ViewStats> list = new ArrayList<>();
             for (Hit hit : hitRepository.findAllByTimestampBetween(startDate, endDate)) {
@@ -53,10 +55,18 @@ public class HitServiceImpl implements HitService {
             }
             hits = list;
         }
-        return uris == null ? hits : hits.stream()
-                .map(viewStats -> filterByUris(viewStats, uris))
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+        if (uris == null) {
+            return hits;
+        } else {
+            List<ViewStats> list = new ArrayList<>();
+            for (ViewStats viewStats : hits) {
+                ViewStats stats = filterByUris(viewStats, uris);
+                if (stats != null) {
+                    list.add(stats);
+                }
+            }
+            return list;
+        }
     }
 
     private Integer countViewsByUri(String uri) {
