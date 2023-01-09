@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 @Table(name = "events")
 @Getter
 @Setter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Event {
@@ -58,7 +57,6 @@ public class Event {
     @Column(length = 255, nullable = false)
     private String title;
 
-    @Builder.Default
     private Long views = 0L;
 
     public Event(Long id, String annotation, Category category, LocalDateTime createdOn, String description, LocalDateTime eventDate, Boolean paid, Integer participantLimit, LocalDateTime publishedOn, Boolean requestModeration, State state, String title) {
