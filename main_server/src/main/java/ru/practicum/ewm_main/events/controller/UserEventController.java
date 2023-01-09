@@ -42,7 +42,7 @@ public class UserEventController {
         return eventService.createEvent(userId, eventDto);
     }
 
-    @GetMapping
+    @GetMapping("/{eventId}")
     public EventDto getEventByUser(@PathVariable Long userId,
                                    @PathVariable Long eventId) {
         return eventService.getEventByUser(eventId, userId);
