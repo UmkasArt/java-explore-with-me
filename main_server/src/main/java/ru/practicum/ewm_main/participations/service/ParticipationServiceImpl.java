@@ -133,15 +133,15 @@ public class ParticipationServiceImpl implements ParticipationService {
 
     private Event checkAndGetEvent(Long id) {
         return eventRepository.findById(id)
-                .orElseThrow(() -> new BadRequestException("Event with id = " + id + " not found"));
+                .orElseThrow(() -> new NotFoundException("Event with id = " + id + " not found"));
     }
 
     private void equalsOfParameters(Long userId, Event event, Participation participation) {
         if (!event.getInitiator().getId().equals(userId)) {
-            throw new NotFoundException("Only initiator of event can confirm or reject participation request to this event");
+            throw new BadRequestException("Only initiator of event can confirm or reject participation request to this event");
         }
         if (!event.getId().equals(participation.getEvent().getId())) {
-            throw new NotFoundException("EventId not equals eventId of participation request");
+            throw new BadRequestException("EventId not equals eventId of participation request");
         }
     }
 }
