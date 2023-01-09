@@ -16,5 +16,6 @@ public class ViewStats {
     public ViewStats(String app, String uri) {
         this.app = app;
         this.uri = uri;
+        this.hits = 0L;
     }
 }

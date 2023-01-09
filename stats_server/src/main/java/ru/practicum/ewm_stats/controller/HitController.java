@@ -21,7 +21,7 @@ public class HitController {
     public List<ViewStats> getStats(@RequestParam String start,
                                     @RequestParam String end,
                                     @RequestParam(required = false) List<String> uris,
-                                    @RequestParam(defaultValue = "false") Boolean uniq) {
+                                    @RequestParam(required = false, defaultValue = "false") Boolean uniq) {
         return hitService.getStats(start, end, uris, uniq);
     }
 

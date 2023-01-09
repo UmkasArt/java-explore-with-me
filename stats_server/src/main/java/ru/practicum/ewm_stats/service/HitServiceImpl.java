@@ -37,26 +37,23 @@ public class HitServiceImpl implements HitService {
         LocalDateTime startDate = LocalDateTime.parse(start, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         LocalDateTime endDate = LocalDateTime.parse(end, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         List<ViewStats> hits;
+        List<ViewStats> list = new ArrayList<>();
         if (Boolean.TRUE.equals(uniq)) {
-            List<ViewStats> list = new ArrayList<>();
             for (ViewStats viewStats : hitRepository.findDistinct(startDate, endDate)) {
                 viewStats.setHits(Long.valueOf(countViewsByUri(viewStats.getUri())));
                 list.add(viewStats);
             }
-            hits = list;
         } else {
-            List<ViewStats> list = new ArrayList<>();
             for (Hit hit : hitRepository.findAllByTimestampBetween(startDate, endDate)) {
                 ViewStats viewStats = toViewStats(hit);
                 viewStats.setHits(Long.valueOf(countViewsByUri(viewStats.getUri())));
                 list.add(viewStats);
             }
-            hits = list;
         }
+        hits = list;
         if (uris == null) {
             return hits;
         } else {
-            List<ViewStats> list = new ArrayList<>();
             for (ViewStats viewStats : hits) {
                 ViewStats stats = filterByUris(viewStats, uris);
                 if (stats != null) {
