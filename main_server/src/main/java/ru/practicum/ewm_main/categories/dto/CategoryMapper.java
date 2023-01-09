@@ -9,6 +9,7 @@ public class CategoryMapper {
                 categoryDto.getId(),
                 categoryDto.getName());
     }
+
     public static CategoryDto toCategoryDto(Category category) {
         return new CategoryDto(
                 category.getId(),
