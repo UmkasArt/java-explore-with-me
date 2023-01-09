@@ -8,7 +8,6 @@ import javax.persistence.*;
 @Table(name = "users")
 @Getter
 @Setter
-//todo возможно вернуть билдер
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {

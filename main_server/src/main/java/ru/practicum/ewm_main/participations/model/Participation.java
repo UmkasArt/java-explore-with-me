@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 @Table(name = "participations")
 @Getter
 @Setter
-//todo возможно надо будет вернуть билдер
 @AllArgsConstructor
 @NoArgsConstructor
 public class Participation {

@@ -7,7 +7,6 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
-//todo вернуть билдер
 @AllArgsConstructor
 @NoArgsConstructor
 public class NewEventDto {

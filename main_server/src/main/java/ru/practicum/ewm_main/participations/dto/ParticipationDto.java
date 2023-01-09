@@ -5,7 +5,6 @@ import ru.practicum.ewm_main.participations.model.StatusRequest;
 
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class ParticipationDto {

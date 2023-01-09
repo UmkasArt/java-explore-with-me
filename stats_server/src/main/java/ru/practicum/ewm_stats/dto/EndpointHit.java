@@ -5,7 +5,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-//todo возможно вернуть билдер
 public class EndpointHit {
     private Long id;
 

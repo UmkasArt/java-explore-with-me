@@ -4,7 +4,6 @@ import lombok.*;
 
 @Getter
 @Setter
-//todo вернуть билдер
 @NoArgsConstructor
 @AllArgsConstructor
 public class LocationDto {

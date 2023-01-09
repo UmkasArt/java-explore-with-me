@@ -7,7 +7,6 @@ import java.util.List;
 
 @Getter
 @Setter
-//todo возможно вернуть билдер
 @AllArgsConstructor
 @NoArgsConstructor
 public class ShortCompilationDto {

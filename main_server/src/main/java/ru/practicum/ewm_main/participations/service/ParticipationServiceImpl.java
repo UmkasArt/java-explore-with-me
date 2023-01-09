@@ -38,15 +38,6 @@ public class ParticipationServiceImpl implements ParticipationService {
         if (participationRepository.findByEventIdAndRequesterId(eventId, userId) != null) {
             throw new BadRequestException("Participation request already exist");
         }
-        /*Participation participation = Participation
-                .builder()
-                .created(LocalDateTime.now())
-                .requester(userRepository.findById(userId)
-                        .orElseThrow(() -> new NotFoundException("user with id = " + userId + " not found")))
-                .event(eventRepository.findById(eventId)
-                        .orElseThrow(() -> new NotFoundException("event with id = " + eventId + " not found")))
-                .status(CONFIRMED)
-                .build();*/
         Participation participation = new Participation(
                 LocalDateTime.now(),
                 userRepository.findById(userId)

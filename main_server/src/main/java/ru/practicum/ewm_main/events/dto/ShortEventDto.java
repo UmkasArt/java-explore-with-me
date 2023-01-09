@@ -6,7 +6,6 @@ import ru.practicum.ewm_main.users.dto.ShortUserDto;
 
 @Getter
 @Setter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class ShortEventDto {

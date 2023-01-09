@@ -4,7 +4,6 @@ import lombok.*;
 
 @Getter
 @Setter
-//todo возможно вернуть билдер
 @AllArgsConstructor
 @NoArgsConstructor
 public class ViewStats {

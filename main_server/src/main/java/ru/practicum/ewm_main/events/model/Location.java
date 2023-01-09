@@ -8,7 +8,6 @@ import javax.persistence.*;
 @Table(name = "locations")
 @Getter
 @Setter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Location {

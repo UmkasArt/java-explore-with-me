@@ -7,7 +7,6 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
-//todo возможно вернуть билдер
 @NoArgsConstructor
 @AllArgsConstructor
 public class CategoryDto {

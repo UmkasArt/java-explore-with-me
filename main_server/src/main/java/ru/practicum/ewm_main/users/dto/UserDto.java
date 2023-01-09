@@ -6,7 +6,6 @@ import javax.validation.constraints.NotBlank;
 
 @Getter
 @Setter
-//todo вернуть билдер
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDto {

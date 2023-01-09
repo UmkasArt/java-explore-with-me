@@ -23,17 +23,6 @@ public class EventClient extends BaseClient {
         );
     }
 
-    /*public void createHit(HttpServletRequest request) {
-        String uri = request.getRequestURI();
-        String ip = request.getRemoteAddr();
-        post("/hit", EndpointHit.builder()
-                .ip(ip)
-                .uri(uri)
-                .app("main-server")
-                .timestamp(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
-                .build());
-    }*/
-
     public void createHit(HttpServletRequest request) {
         String uri = request.getRequestURI();
         String ip = request.getRemoteAddr();
