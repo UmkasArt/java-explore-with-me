@@ -56,7 +56,7 @@ public class ParticipationServiceImpl implements ParticipationService {
                 CONFIRMED
         );
 
-        if (userId.equals(participation.getEvent().getInitiator().getId())){
+        if (userId.equals(participation.getEvent().getInitiator().getId())) {
             throw new BadRequestException("Requester can not be initiator of event");
         }
         if (!participation.getEvent().getState().equals(PUBLISHED)) {

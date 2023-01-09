@@ -1,6 +1,5 @@
 package ru.practicum.ewm_main.participations.controller;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewm_main.participations.dto.ParticipationDto;
 import ru.practicum.ewm_main.participations.service.ParticipationService;

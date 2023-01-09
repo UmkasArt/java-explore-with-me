@@ -12,7 +12,6 @@ import ru.practicum.ewm_main.events.dto.ShortEventDto;
 import ru.practicum.ewm_main.events.model.Event;
 import ru.practicum.ewm_main.events.repository.EventRepository;
 import ru.practicum.ewm_main.exception.BadRequestException;
-import ru.practicum.ewm_main.exception.NotFoundException;
 import ru.practicum.ewm_main.participations.repository.ParticipationRepository;
 
 import java.util.List;

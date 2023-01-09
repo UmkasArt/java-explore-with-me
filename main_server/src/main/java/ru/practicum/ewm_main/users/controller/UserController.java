@@ -1,6 +1,5 @@
 package ru.practicum.ewm_main.users.controller;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewm_main.users.dto.UserDto;
 import ru.practicum.ewm_main.users.service.UserService;

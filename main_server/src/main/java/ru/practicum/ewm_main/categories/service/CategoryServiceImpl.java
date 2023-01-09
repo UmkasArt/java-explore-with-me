@@ -10,7 +10,6 @@ import ru.practicum.ewm_main.categories.model.Category;
 import ru.practicum.ewm_main.categories.repository.CategoryRepository;
 import ru.practicum.ewm_main.events.repository.EventRepository;
 import ru.practicum.ewm_main.exception.BadRequestException;
-import ru.practicum.ewm_main.exception.NotFoundException;
 
 import java.util.List;
 import java.util.stream.Collectors;

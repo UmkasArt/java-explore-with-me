@@ -1,6 +1,5 @@
 package ru.practicum.ewm_main.categories.controller;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewm_main.categories.dto.CategoryDto;
 import ru.practicum.ewm_main.categories.service.CategoryService;
