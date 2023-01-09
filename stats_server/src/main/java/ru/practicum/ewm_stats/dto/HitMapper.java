@@ -41,8 +41,7 @@ public class HitMapper {
     public static ViewStats toViewStats(Hit hit) {
         return new ViewStats(
                 hit.getApp(),
-                hit.getApp(),
-                Long.valueOf(hit.getUri())
+                hit.getUri()
         );
     }
 }
