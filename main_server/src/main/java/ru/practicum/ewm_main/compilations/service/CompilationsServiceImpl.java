@@ -11,7 +11,7 @@ import ru.practicum.ewm_main.compilations.repository.CompilationRepository;
 import ru.practicum.ewm_main.events.dto.ShortEventDto;
 import ru.practicum.ewm_main.events.model.Event;
 import ru.practicum.ewm_main.events.repository.EventRepository;
-import ru.practicum.ewm_main.exception.BadRequestException;
+import ru.practicum.ewm_main.exception.NotFoundException;
 import ru.practicum.ewm_main.participations.repository.ParticipationRepository;
 
 import java.util.List;
@@ -115,11 +115,11 @@ public class CompilationsServiceImpl implements CompilationsService {
 
     private Event getAndCheckEvent(Long id) {
         return eventRepository.findById(id)
-                .orElseThrow(() -> new BadRequestException("Event with id = " + id + " not found"));
+                .orElseThrow(() -> new NotFoundException("Event with id = " + id + " not found"));
     }
 
     private Compilation getAndCheckCompilation(Long id) {
         return compilationRepository.findById(id)
-                .orElseThrow(() -> new BadRequestException("Compilation with id = " + id + " not found"));
+                .orElseThrow(() -> new NotFoundException("Compilation with id = " + id + " not found"));
     }
 }
