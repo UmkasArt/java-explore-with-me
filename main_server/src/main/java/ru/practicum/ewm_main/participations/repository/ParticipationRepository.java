@@ -20,8 +20,7 @@ public interface ParticipationRepository extends JpaRepository<Participation, Lo
 
     int countParticipationByEventIdAndStatus(Long eventId, StatusRequest status);
 
-    @Query(value = "SELECT p.event_id as id, COUNT(*) FROM participations p" +
-            "WHERE p.status = ?1 " +
-            "GROUP BY p.event_id", nativeQuery = true)
+    @Query("SELECT new ru.practicum.ewm_main.participations.model.ParticipationCount(p.event.id, COUNT(p.event.id)) "
+            + "FROM Participation AS p WHERE p.status = ?1 GROUP BY p.event.id")
     List<ParticipationCount> findCountParticipationByEventId(StatusRequest status);
 }
