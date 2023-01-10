@@ -11,6 +11,6 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ParticipationCount {
-    private Long count;
     private Long eventId;
+    private Long count;
 }
