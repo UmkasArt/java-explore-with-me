@@ -1,9 +1,12 @@
 package ru.practicum.ewm_main.participations.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import ru.practicum.ewm_main.participations.model.Participation;
+import ru.practicum.ewm_main.participations.model.ParticipationCount;
 import ru.practicum.ewm_main.participations.model.StatusRequest;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,4 +20,8 @@ public interface ParticipationRepository extends JpaRepository<Participation, Lo
     List<Participation> findAllByEventIdAndEventInitiatorId(Long eventId, Long userId);
 
     int countParticipationByEventIdAndStatus(Long eventId, StatusRequest status);
+
+    @Query("SELECT new ru.practicum.ewm_main.participations.model.ParticipationCount(p.event.id, count(p.event.id)) " +
+            "FROM Participation p WHERE p.status = ?1")
+    List<ParticipationCount> findCountParticipationByEventId(StatusRequest status);
 }

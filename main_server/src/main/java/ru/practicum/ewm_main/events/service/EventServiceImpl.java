@@ -12,6 +12,7 @@ import ru.practicum.ewm_main.events.repository.EventRepository;
 import ru.practicum.ewm_main.events.repository.LocationRepository;
 import ru.practicum.ewm_main.exception.BadRequestException;
 import ru.practicum.ewm_main.exception.NotFoundException;
+import ru.practicum.ewm_main.participations.model.ParticipationCount;
 import ru.practicum.ewm_main.participations.repository.ParticipationRepository;
 import ru.practicum.ewm_main.users.model.User;
 import ru.practicum.ewm_main.users.repository.UserRepository;
@@ -47,6 +48,11 @@ public class EventServiceImpl implements EventService {
     @Override
     public List<ShortEventDto> getEvents(String text, List<Long> categoryIds, Boolean paid, String rangeStart,
                                          String rangeEnd, Boolean onlyAvailable, String sort, int from, int size) {
+        if (from < 0) {
+            throw new BadRequestException("Incorrect parameters");
+        } else if (size < 1) {
+            throw new BadRequestException("Incorrect parameters");
+        }
         List<ShortEventDto> events = eventRepository.searchEvents(text, categoryIds, paid, PUBLISHED,
                         PageRequest.of(from / size, size))
                 .stream()
@@ -57,9 +63,9 @@ public class EventServiceImpl implements EventService {
                                 DATE_TIME_FORMATTER)) :
                                 event.getEventDate().isBefore(LocalDateTime.MAX))
                 .map(EventMapper::toShortEventDto)
-                .map(this::setConfirmedRequests)
+                .map(this::setConfirmedRequests) //todo
                 .collect(Collectors.toList());
-        if (Boolean.TRUE.equals(onlyAvailable)) {
+        if (onlyAvailable) {
             events = events.stream().filter(shortEventDto ->
                     shortEventDto.getConfirmedRequests() < eventRepository
                             .findById(shortEventDto.getId()).get().getParticipantLimit() ||
@@ -92,7 +98,8 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public EventDto getEvent(Long id) {
-        Event event = checkAndGetEvent(id);
+        Event event = eventRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Event with id = " + id + " not found"));
         if (!event.getState().equals(PUBLISHED)) {
             throw new BadRequestException("Event must be published");
         }
@@ -102,7 +109,13 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public List<ShortEventDto> getUserEvents(Long userId, int from, int size) {
-        User user = checkAndGetUser(userId);
+        if (from < 0) {
+            throw new BadRequestException("Incorrect parameters");
+        } else if (size < 1) {
+            throw new BadRequestException("Incorrect parameters");
+        }
+        userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("User with id = " + userId + " not found"));
         return eventRepository.findAllByInitiatorId(userId, PageRequest.of(from / size, size))
                 .stream()
                 .map(EventMapper::toShortEventDto)
@@ -113,7 +126,8 @@ public class EventServiceImpl implements EventService {
     @Transactional
     @Override
     public EventDto updateEvent(Long userId, UserUpdateEventDto eventDto) {
-        Event event = checkAndGetEvent(eventDto.getEventId());
+        Event event = eventRepository.findById(eventDto.getEventId())
+                .orElseThrow(() -> new NotFoundException("Event with id = " + eventDto.getEventId() + " not found"));
         if (!event.getInitiator().getId().equals(userId)) {
             throw new BadRequestException("Only initiator can update event");
         }
@@ -147,7 +161,8 @@ public class EventServiceImpl implements EventService {
     @Transactional
     @Override
     public EventDto createEvent(Long userId, NewEventDto eventDto) {
-        User user = checkAndGetUser(userId);
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("User with id = " + userId + " not found"));
         Event event = EventMapper.toEvent(eventDto);
         if (event.getEventDate().isBefore(LocalDateTime.now().plusHours(2))) {
             throw new BadRequestException("Date event is too late");
@@ -162,7 +177,8 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public EventDto getEventByUser(Long eventId, Long userId) {
-        Event event = checkAndGetEvent(eventId);
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new NotFoundException("Event with id = " + eventId + " not found"));
         if (!event.getInitiator().getId().equals(userId)) {
             throw new BadRequestException("Only initiator can get fullEventDto");
         }
@@ -172,7 +188,8 @@ public class EventServiceImpl implements EventService {
     @Transactional
     @Override
     public EventDto cancelEventByUser(Long eventId, Long userId) {
-        Event event = checkAndGetEvent(eventId);
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new NotFoundException("Event with id = " + eventId + " not found"));
         if (!event.getInitiator().getId().equals(userId)) {
             throw new BadRequestException("Only initiator of event can change it");
         }
@@ -187,11 +204,17 @@ public class EventServiceImpl implements EventService {
     @Override
     public List<EventDto> getEventsByAdmin(List<Long> userIds, List<String> states, List<Long> categoryIds,
                                            String rangeStart, String rangeEnd, int from, int size) {
+        if (from < 0) {
+            throw new BadRequestException("Incorrect parameters");
+        } else if (size < 1) {
+            throw new BadRequestException("Incorrect parameters");
+        }
         List<State> stateList = states == null ? null : states
                 .stream()
                 .map(State::valueOf)
                 .collect(Collectors.toList());
-        return eventRepository.searchEventsByAdmin(userIds, stateList, categoryIds, PageRequest.of(from / size, size))
+
+        List<EventDto> eventDtoList = eventRepository.searchEventsByAdmin(userIds, stateList, categoryIds, PageRequest.of(from / size, size))
                 .stream()
                 .filter(event -> rangeStart != null ?
                         event.getEventDate().isAfter(LocalDateTime.parse(rangeStart, DATE_TIME_FORMATTER)) :
@@ -199,14 +222,16 @@ public class EventServiceImpl implements EventService {
                                 && rangeEnd != null ? event.getEventDate().isBefore(LocalDateTime.parse(rangeEnd,
                                 DATE_TIME_FORMATTER)) : event.getEventDate().isBefore(LocalDateTime.MAX))
                 .map(EventMapper::toEventDto)
-                .map(this::setConfirmedRequests)
                 .collect(Collectors.toList());
+        setConfirmedRequests(eventDtoList);
+        return eventDtoList;
     }
 
     @Transactional
     @Override
     public EventDto updateEventByAdmin(Long eventId, AdminUpdateEventDto eventDto) {
-        Event event = checkAndGetEvent(eventId);
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new NotFoundException("Event with id = " + eventId + " not found"));
         Optional.ofNullable(eventDto.getAnnotation()).ifPresent(event::setAnnotation);
         if (eventDto.getCategory() != null) {
             event.setCategory(categoryRepository.findById(eventDto.getCategory())
@@ -231,7 +256,8 @@ public class EventServiceImpl implements EventService {
     @Transactional
     @Override
     public EventDto publishEvent(Long eventId) {
-        Event event = checkAndGetEvent(eventId);
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new NotFoundException("Event with id = " + eventId + " not found"));
         if (event.getEventDate().isBefore(LocalDateTime.now().plusHours(1))) {
             throw new BadRequestException("Event must start min after one hour of now");
         }
@@ -246,7 +272,8 @@ public class EventServiceImpl implements EventService {
     @Transactional
     @Override
     public EventDto rejectEvent(Long eventId) {
-        Event event = checkAndGetEvent(eventId);
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new NotFoundException("Event with id = " + eventId + " not found"));
         event.setState(CANCELED);
         EventDto eventDto = EventMapper.toEventDto(eventRepository.save(event));
         return setConfirmedRequests(eventDto);
@@ -258,6 +285,16 @@ public class EventServiceImpl implements EventService {
         return eventDto;
     }
 
+    private void setConfirmedRequests(List<EventDto> eventDtos) {
+        for (ParticipationCount participationCount : participationRepository.findCountParticipationByEventId(CONFIRMED)) {
+            for (EventDto eventDto : eventDtos) {
+                if (eventDto.getId().equals(participationCount.getEventId())) {
+                    eventDto.setConfirmedRequests(participationCount.getCount().intValue());
+                }
+            }
+        }
+    }
+
     private ShortEventDto setConfirmedRequests(ShortEventDto eventDto) {
         eventDto.setConfirmedRequests(participationRepository.countParticipationByEventIdAndStatus(eventDto.getId(),
                 CONFIRMED));
@@ -265,18 +302,9 @@ public class EventServiceImpl implements EventService {
     }
 
     private void incrementViews(Long id) {
-        Event event = checkAndGetEvent(id);
+        Event event = eventRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Event with id = " + id + " not found"));
         long views = event.getViews() + 1;
         event.setViews(views);
-    }
-
-    private Event checkAndGetEvent(Long id) {
-        return eventRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Event with id = " + id + " not found"));
-    }
-
-    private User checkAndGetUser(Long id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("User with id = " + id + " not found"));
     }
 }

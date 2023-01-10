@@ -10,6 +10,7 @@ import java.util.List;
 @Table(name = "compilations")
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Compilation {
@@ -27,9 +28,4 @@ public class Compilation {
             joinColumns = {@JoinColumn(name = "compilation_id")},
             inverseJoinColumns = {@JoinColumn(name = "event_id")})
     private List<Event> events;
-
-    public Compilation(String title, Boolean pinned) {
-        this.title = title;
-        this.pinned = pinned;
-    }
 }

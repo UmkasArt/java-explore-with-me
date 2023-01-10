@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @Table(name = "events")
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Event {
@@ -58,40 +59,4 @@ public class Event {
     private String title;
 
     private Long views = 0L;
-
-    public Event(Long id, String annotation, Category category, LocalDateTime createdOn, String description, LocalDateTime eventDate, Boolean paid, Integer participantLimit, LocalDateTime publishedOn, Boolean requestModeration, State state, String title) {
-        this.id = id;
-        this.annotation = annotation;
-        this.category = category;
-        this.createdOn = createdOn;
-        this.description = description;
-        this.eventDate = eventDate;
-        this.paid = paid;
-        this.participantLimit = participantLimit;
-        this.publishedOn = publishedOn;
-        this.requestModeration = requestModeration;
-        this.state = state;
-        this.title = title;
-    }
-
-    public Event(Long id, String annotation, Category category, LocalDateTime eventDate, Boolean paid, String title) {
-        this.id = id;
-        this.annotation = annotation;
-        this.category = category;
-        this.eventDate = eventDate;
-        this.paid = paid;
-        this.title = title;
-    }
-
-    public Event(String annotation, String description, LocalDateTime eventDate, Boolean paid, Integer participantLimit, Boolean requestModeration, String title, State state, LocalDateTime createdOn) {
-        this.annotation = annotation;
-        this.description = description;
-        this.eventDate = eventDate;
-        this.paid = paid;
-        this.participantLimit = participantLimit;
-        this.requestModeration = requestModeration;
-        this.title = title;
-        this.state = state;
-        this.createdOn = createdOn;
-    }
 }

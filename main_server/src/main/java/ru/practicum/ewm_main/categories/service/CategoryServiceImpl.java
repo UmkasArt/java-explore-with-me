@@ -34,6 +34,11 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<CategoryDto> getCategories(int from, int size) {
+        if (from < 0) {
+            throw new BadRequestException("Incorrect parameters");
+        } else if (size < 1) {
+            throw new BadRequestException("Incorrect parameters");
+        }
         return categoryRepository.findAll(PageRequest.of(from / size, size))
                 .stream()
                 .map(CategoryMapper::toCategoryDto)

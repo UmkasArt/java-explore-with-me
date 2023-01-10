@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @Table(name = "participations")
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Participation {
@@ -31,18 +32,4 @@ public class Participation {
 
     @Enumerated(EnumType.STRING)
     private StatusRequest status;
-
-    public Participation(Long id, LocalDateTime created, StatusRequest status) {
-        this.id = id;
-        this.created = created;
-        this.status = status;
-    }
-
-
-    public Participation(LocalDateTime created, User requester, Event event, StatusRequest status) {
-        this.created = created;
-        this.event = event;
-        this.requester = requester;
-        this.status = status;
-    }
 }

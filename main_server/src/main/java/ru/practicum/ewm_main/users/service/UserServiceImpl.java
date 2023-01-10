@@ -3,6 +3,7 @@ package ru.practicum.ewm_main.users.service;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.practicum.ewm_main.exception.BadRequestException;
 import ru.practicum.ewm_main.exception.NotFoundException;
 import ru.practicum.ewm_main.users.dto.UserDto;
 import ru.practicum.ewm_main.users.dto.UserMapper;
@@ -23,6 +24,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDto> getUsers(List<Long> ids, int from, int size) {
+        if (from < 0) {
+            throw new BadRequestException("Incorrect parameters");
+        } else if (size < 1) {
+            throw new BadRequestException("Incorrect parameters");
+        }
         if (ids.isEmpty()) {
             return userRepository.findAll(PageRequest.of(from / size, size))
                     .stream()
@@ -44,11 +50,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void deleteUser(Long id) {
-        userRepository.delete(checkAndGetUser(id));
-    }
-
-    private User checkAndGetUser(Long id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("User with id = " + id + " not found"));
+        userRepository.delete(userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("User with id = " + id + " not found")));
     }
 }

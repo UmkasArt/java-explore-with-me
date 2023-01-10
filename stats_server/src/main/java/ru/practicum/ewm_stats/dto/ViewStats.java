@@ -4,17 +4,11 @@ import lombok.*;
 
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class ViewStats {
     private String app;
     private String uri;
-
     private Long hits;
-
-    public ViewStats(String app, String uri) {
-        this.app = app;
-        this.uri = uri;
-        this.hits = 0L;
-    }
 }

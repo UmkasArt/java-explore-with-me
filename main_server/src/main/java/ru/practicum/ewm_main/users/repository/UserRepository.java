@@ -10,6 +10,4 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
     Page<User> findAllByIdIn(List<Long> ids, Pageable pageable);
-
-    Optional<User> findByName(String name);
 }

@@ -16,55 +16,55 @@ public class ErrorHandler {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.CONFLICT)
     public ApiError handleConflictException(final DataIntegrityViolationException e) {
-        return new ApiError(
-                List.of(e.getClass().getName()),
-                e.getLocalizedMessage(),
-                "The required object was found.",
-                HttpStatus.CONFLICT
-        );
+        return new ApiError.ApiErrorBuilder()
+                .errors(List.of(e.getClass().getName()))
+                .message(e.getLocalizedMessage())
+                .reason("The required object was found.")
+                .status(HttpStatus.CONFLICT)
+                .build();
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ApiError handleUserNotFoundException(final NotFoundException e, WebRequest request) {
-        return new ApiError(
-                List.of(e.getClass().getName()),
-                e.getLocalizedMessage(),
-                "Object not found " + request.getDescription(false),
-                HttpStatus.NOT_FOUND
-        );
+        return new ApiError.ApiErrorBuilder()
+                .errors(List.of(e.getClass().getName()))
+                .message(e.getLocalizedMessage())
+                .reason("Object not found " + request.getDescription(false))
+                .status(HttpStatus.NOT_FOUND)
+                .build();
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ApiError handleValidationException(final BadRequestException e, WebRequest request) {
-        return new ApiError(
-                List.of(e.getClass().getName()),
-                e.getLocalizedMessage(),
-                request.getDescription(false),
-                HttpStatus.FORBIDDEN
-        );
+        return new ApiError.ApiErrorBuilder()
+                .errors(List.of(e.getClass().getName()))
+                .message(e.getLocalizedMessage())
+                .reason(request.getDescription(false))
+                .status(HttpStatus.FORBIDDEN)
+                .build();
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ApiError handleInternalServerErrorException(final HttpServerErrorException.InternalServerError e, WebRequest request) {
-        return new ApiError(
-                List.of(e.getClass().getName()),
-                e.getLocalizedMessage(),
-                request.getDescription(false),
-                HttpStatus.FORBIDDEN
-        );
+        return new ApiError.ApiErrorBuilder()
+                .errors(List.of(e.getClass().getName()))
+                .message(e.getLocalizedMessage())
+                .reason(request.getDescription(false))
+                .status(HttpStatus.FORBIDDEN)
+                .build();
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiError handleThrowableExceptions(final Throwable e) {
-        return new ApiError(
-                List.of(e.getClass().getName()),
-                e.getLocalizedMessage(),
-                "Throwable exception",
-                HttpStatus.BAD_REQUEST
-        );
+        return new ApiError.ApiErrorBuilder()
+                .errors(List.of(e.getClass().getName()))
+                .message(e.getLocalizedMessage())
+                .reason("Throwable exception")
+                .status(HttpStatus.BAD_REQUEST)
+                .build();
     }
 }

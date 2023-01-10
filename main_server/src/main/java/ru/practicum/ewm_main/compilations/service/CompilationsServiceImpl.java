@@ -11,9 +11,11 @@ import ru.practicum.ewm_main.compilations.repository.CompilationRepository;
 import ru.practicum.ewm_main.events.dto.ShortEventDto;
 import ru.practicum.ewm_main.events.model.Event;
 import ru.practicum.ewm_main.events.repository.EventRepository;
+import ru.practicum.ewm_main.exception.BadRequestException;
 import ru.practicum.ewm_main.exception.NotFoundException;
 import ru.practicum.ewm_main.participations.repository.ParticipationRepository;
 
+import javax.validation.ValidationException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,6 +36,11 @@ public class CompilationsServiceImpl implements CompilationsService {
 
     @Override
     public List<CompilationDto> getCompilations(Boolean pinned, int from, int size) {
+        if (from < 0) {
+            throw new BadRequestException("Incorrect parameters");
+        } else if (size < 1) {
+            throw new BadRequestException("Incorrect parameters");
+        }
         if (pinned == null) {
             return compilationRepository.findAll(PageRequest.of(from / size, size))
                     .stream()

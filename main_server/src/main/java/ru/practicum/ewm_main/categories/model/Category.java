@@ -8,6 +8,7 @@ import javax.persistence.*;
 @Table(name = "categories")
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Category {
@@ -17,8 +18,4 @@ public class Category {
 
     @Column(name = "name", unique = true, length = 50, nullable = false)
     private String name;
-
-    public Category(String name) {
-        this.name = name;
-    }
 }

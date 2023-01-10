@@ -38,14 +38,15 @@ public class ParticipationServiceImpl implements ParticipationService {
         if (participationRepository.findByEventIdAndRequesterId(eventId, userId) != null) {
             throw new BadRequestException("Participation request already exist");
         }
-        Participation participation = new Participation(
-                LocalDateTime.now(),
-                userRepository.findById(userId)
-                        .orElseThrow(() -> new NotFoundException("User with id = " + userId + " not found")),
-                eventRepository.findById(eventId)
-                        .orElseThrow(() -> new NotFoundException("Event with id = " + eventId + " not found")),
-                CONFIRMED
-        );
+        Participation participation = Participation
+                .builder()
+                .created(LocalDateTime.now())
+                .requester(userRepository.findById(userId)
+                        .orElseThrow(() -> new NotFoundException("user with id = " + userId + " not found")))
+                .event(eventRepository.findById(eventId)
+                        .orElseThrow(() -> new NotFoundException("event with id = " + eventId + " not found")))
+                .status(CONFIRMED)
+                .build();
 
         if (userId.equals(participation.getEvent().getInitiator().getId())) {
             throw new BadRequestException("Requester can not be initiator of event");
@@ -83,8 +84,10 @@ public class ParticipationServiceImpl implements ParticipationService {
     @Transactional
     @Override
     public ParticipationDto confirmParticipationRequest(Long eventId, Long userId, Long reqId) {
-        Participation participation = checkAndGetParticipation(reqId);
-        Event event = checkAndGetEvent(eventId);
+        Participation participation = participationRepository.findById(reqId)
+                .orElseThrow(() -> new NotFoundException("Participation request with id = " + reqId + " not found"));
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new NotFoundException("Event with id = " + eventId + " not found"));
         equalsOfParameters(userId, event, participation);
         if (!participation.getStatus().equals(PENDING)) {
             throw new BadRequestException("Only participation request with status pending can be approval");
@@ -100,8 +103,10 @@ public class ParticipationServiceImpl implements ParticipationService {
     @Transactional
     @Override
     public ParticipationDto rejectParticipationRequest(Long eventId, Long userId, Long reqId) {
-        Participation participation = checkAndGetParticipation(reqId);
-        Event event = checkAndGetEvent(eventId);
+        Participation participation = participationRepository.findById(reqId)
+                .orElseThrow(() -> new NotFoundException("Participation request with id = " + reqId + " not found"));
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new NotFoundException("Event with id = " + eventId + " not found"));
         equalsOfParameters(userId, event, participation);
         participation.setStatus(REJECTED);
         return ParticipationMapper.toParticipationDto(participationRepository.save(participation));
@@ -114,17 +119,6 @@ public class ParticipationServiceImpl implements ParticipationService {
                 .orElseThrow(() -> new BadRequestException("Only owner can cancel participation request"));
         participation.setStatus(CANCELED);
         return ParticipationMapper.toParticipationDto(participationRepository.save(participation));
-    }
-
-
-    private Participation checkAndGetParticipation(Long id) {
-        return participationRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Participation request with id = " + id + " not found"));
-    }
-
-    private Event checkAndGetEvent(Long id) {
-        return eventRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Event with id = " + id + " not found"));
     }
 
     private void equalsOfParameters(Long userId, Event event, Participation participation) {

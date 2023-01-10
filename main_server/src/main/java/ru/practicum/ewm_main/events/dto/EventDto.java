@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class EventDto {
@@ -43,22 +44,4 @@ public class EventDto {
     private Integer confirmedRequests;
 
     private Long views;
-
-    public EventDto(Long id, String annotation, CategoryDto category, String createdOn, String description, String eventDate, ShortUserDto initiator, LocationDto location, Boolean paid, Integer participantLimit, LocalDateTime publishedOn, Boolean requestModeration, State state, String title, Long views) {
-        this.id = id;
-        this.annotation = annotation;
-        this.category = category;
-        this.createdOn = createdOn;
-        this.description = description;
-        this.eventDate = eventDate;
-        this.initiator = initiator;
-        this.location = location;
-        this.paid = paid;
-        this.participantLimit = participantLimit;
-        this.publishedOn = publishedOn;
-        this.requestModeration = requestModeration;
-        this.state = state;
-        this.title = title;
-        this.views = views;
-    }
 }

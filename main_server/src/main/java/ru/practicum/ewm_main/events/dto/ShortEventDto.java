@@ -6,6 +6,7 @@ import ru.practicum.ewm_main.users.dto.ShortUserDto;
 
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class ShortEventDto {
@@ -26,15 +27,4 @@ public class ShortEventDto {
     private Integer confirmedRequests;
 
     private Long views;
-
-    public ShortEventDto(Long id, String annotation, CategoryDto category, String eventDate, ShortUserDto initiator, Boolean paid, String title, Long views) {
-        this.id = id;
-        this.annotation = annotation;
-        this.category = category;
-        this.eventDate = eventDate;
-        this.initiator = initiator;
-        this.paid = paid;
-        this.title = title;
-        this.views = views;
-    }
 }

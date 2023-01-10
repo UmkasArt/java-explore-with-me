@@ -8,6 +8,7 @@ import javax.persistence.*;
 @Table(name = "locations")
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Location {
@@ -20,9 +21,4 @@ public class Location {
 
     @Column(nullable = false)
     private float lon;
-
-    public Location(float lat, float lon) {
-        this.lat = lat;
-        this.lon = lon;
-    }
 }
