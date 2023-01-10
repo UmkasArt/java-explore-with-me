@@ -288,7 +288,7 @@ public class EventServiceImpl implements EventService {
     private void setConfirmedRequests(List<EventDto> eventDtos) {
         for (ParticipationCount participationCount : participationRepository.findCountParticipationByEventId(CONFIRMED)) {
             for (EventDto eventDto : eventDtos) {
-                if (eventDto.getId().equals(participationCount.getEventId())) {
+                if (eventDto.getId().equals(participationCount.getId())) {
                     eventDto.setConfirmedRequests(participationCount.getCount().intValue());
                 }
             }
