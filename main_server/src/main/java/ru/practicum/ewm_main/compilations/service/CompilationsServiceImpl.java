@@ -15,7 +15,6 @@ import ru.practicum.ewm_main.exception.BadRequestException;
 import ru.practicum.ewm_main.exception.NotFoundException;
 import ru.practicum.ewm_main.participations.repository.ParticipationRepository;
 
-import javax.validation.ValidationException;
 import java.util.List;
 import java.util.stream.Collectors;
 

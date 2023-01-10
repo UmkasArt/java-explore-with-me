@@ -7,7 +7,6 @@ import ru.practicum.ewm_main.exception.BadRequestException;
 import ru.practicum.ewm_main.exception.NotFoundException;
 import ru.practicum.ewm_main.users.dto.UserDto;
 import ru.practicum.ewm_main.users.dto.UserMapper;
-import ru.practicum.ewm_main.users.model.User;
 import ru.practicum.ewm_main.users.repository.UserRepository;
 
 import java.util.List;

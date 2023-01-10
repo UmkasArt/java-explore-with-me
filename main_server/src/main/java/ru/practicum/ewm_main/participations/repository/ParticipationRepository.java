@@ -6,7 +6,6 @@ import ru.practicum.ewm_main.participations.model.Participation;
 import ru.practicum.ewm_main.participations.model.ParticipationCount;
 import ru.practicum.ewm_main.participations.model.StatusRequest;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
