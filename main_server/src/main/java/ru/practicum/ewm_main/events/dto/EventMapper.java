@@ -93,6 +93,7 @@ public class EventMapper {
                 .title(eventDto.getTitle())
                 .state(PENDING)
                 .createdOn(LocalDateTime.now())
+                .views(0L)
                 .build();
     }
 }
