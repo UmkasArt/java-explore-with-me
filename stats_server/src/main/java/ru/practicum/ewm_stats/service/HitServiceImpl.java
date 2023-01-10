@@ -38,7 +38,7 @@ public class HitServiceImpl implements HitService {
         LocalDateTime endDate = LocalDateTime.parse(end, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         List<ViewStats> hits;
         List<ViewStats> list = new ArrayList<>();
-        if (Boolean.TRUE.equals(uniq)) {
+        if (uniq) {
             for (ViewStats viewStats : hitRepository.findDistinct(startDate, endDate)) {
                 viewStats.setHits(Long.valueOf(countViewsByUri(viewStats.getUri())));
                 list.add(viewStats);

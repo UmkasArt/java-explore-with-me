@@ -23,6 +23,7 @@ public class HitMapper {
                 .builder()
                 .app(hit.getApp())
                 .uri(hit.getUri())
+                .hits(0L)
                 .build();
     }
 
