@@ -3,7 +3,6 @@ package ru.practicum.ewm_main.compilations.dto;
 import ru.practicum.ewm_main.compilations.model.Compilation;
 import ru.practicum.ewm_main.events.dto.EventMapper;
 
-
 import java.util.stream.Collectors;
 
 public class CompilationsMapper {

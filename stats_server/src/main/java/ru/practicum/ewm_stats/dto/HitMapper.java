@@ -1,6 +1,6 @@
 package ru.practicum.ewm_stats.dto;
 
-import ru.practicum.ewm_stats.model.*;
+import ru.practicum.ewm_stats.model.Hit;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
