@@ -34,9 +34,9 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public CommentDto createComment(CommentDto commentDto, Long userId, Long eventId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException("User with id = " + userId + " not found"));
+                .orElseThrow(() -> new NotFoundException(String.format("User with id = %d not found", userId)));
         Event event = eventRepository.findById(eventId)
-                .orElseThrow(() -> new NotFoundException("Event with id = " + eventId + " not found"));
+                .orElseThrow(() -> new NotFoundException(String.format("Event with id = %d not found", eventId)));
         Comment comment = CommentMapper.toComment(commentDto);
         comment.setUser(user);
         comment.setEvent(event);
@@ -54,7 +54,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public CommentDto updateCommentByAdmin(Long commentId, CommentDto commentDto) {
         Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new BadRequestException("Comment with id = " + commentId + " not found"));
+                .orElseThrow(() -> new BadRequestException(String.format("Comment with id = %d not found", commentId)));
         comment.setText(commentDto.getText());
         return CommentMapper.toCommentDto(commentRepository.save(comment));
     }
@@ -69,7 +69,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public void deleteCommentByAdmin(Long commentId) {
         Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new BadRequestException("Comment with id = " + commentId + " not found"));
+                .orElseThrow(() -> new BadRequestException(String.format("Comment with id = %d not found", commentId)));
         commentRepository.delete(comment);
     }
 
@@ -77,7 +77,7 @@ public class CommentServiceImpl implements CommentService {
     @Transactional(readOnly = true)
     public List<CommentDto> getAllCommentsForEvent(Long eventId, int from, int size) {
         Event event = eventRepository.findById(eventId)
-                .orElseThrow(() -> new NotFoundException("Event with id = " + eventId + " not found"));
+                .orElseThrow(() -> new NotFoundException(String.format("Event with id = %d not found", eventId)));
         return commentRepository.findAllByEvent(event, PageRequest.of(from / size, size))
                 .stream()
                 .map(CommentMapper::toCommentDto)
@@ -88,7 +88,7 @@ public class CommentServiceImpl implements CommentService {
     @Transactional(readOnly = true)
     public List<CommentDto> getAllCommentsByUser(Long userId, int from, int size) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException("User with id = " + userId + " not found"));
+                .orElseThrow(() -> new NotFoundException(String.format("User with id = %d not found", userId)));
         return commentRepository.findAllByUser(user, PageRequest.of(from / size, size))
                 .stream()
                 .map(CommentMapper::toCommentDto)

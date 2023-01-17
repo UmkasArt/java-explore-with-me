@@ -15,7 +15,9 @@ public class CommentDto {
     @NotEmpty
     private String text;
 
-    private String authorName;
+    private Long authorId;
+
+    private Long eventId;
 
     private String createdOn;
 }
