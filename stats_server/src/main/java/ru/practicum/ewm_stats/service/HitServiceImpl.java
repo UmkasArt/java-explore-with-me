@@ -2,7 +2,6 @@ package ru.practicum.ewm_stats.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import ru.practicum.ewm_stats.dto.EndpointHit;
 import ru.practicum.ewm_stats.dto.HitMapper;
 import ru.practicum.ewm_stats.dto.ViewStats;
